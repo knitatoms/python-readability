@@ -287,6 +287,21 @@ class Document:
             content_score += min((inner_text_len / 100), 3)
             #if elem not in candidates:
             #    candidates[elem] = self.score_node(elem)
+            
+            # lower score if elem matches unlikelyCandidatesRe 
+            if self.class_or_id_matches( elem, 'unlikelyCandidatesRe' ): #and not self.class_or_id_matches( elem, 'okMaybeItsACandidateRe' ):
+                content_score = content_score / 1.5 # if this element has a class or id we consider "unlikely", lower its score
+                self.debug("Matched! lower score for %s " %(describe(elem),))
+
+            # lower score for elem if parent matches unlikelyCandidatesRe 
+            if self.class_or_id_matches( parent_node, 'unlikelyCandidatesRe' ): #and not self.class_or_id_matches( parent_node, 'okMaybeItsACandidateRe' ):
+                content_score = content_score / 1.5 # if this element has a class or id we consider "unlikely", lower its score
+                self.debug("Matched! lower score for %s due to parent match" %(describe(elem),))
+
+            # lower score for elem if grand_parent matches unlikelyCandidatesRe
+            if self.class_or_id_matches( grand_parent_node, 'unlikelyCandidatesRe' ): #and not self.class_or_id_matches( grand_parent_node, 'okMaybeItsACandidateRe' ):
+                content_score = content_score / 1.5 # if this element has a class or id we consider "unlikely", lower its score
+                self.debug("Matched! lower score for %s due to grand_parent match" %(describe(elem),))
 
             #WTF? candidates[elem]['content_score'] += content_score
             candidates[parent_node]['content_score'] += content_score
