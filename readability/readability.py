@@ -429,6 +429,11 @@ class Document:
 
         for elem in self.tags(node, "form", "iframe", "textarea"):
             elem.drop_tree()
+        for elem in self.tags(node, "a"):
+            # Remove A tags if empty (we avoid problems when empty A is serialized <a href=""/>
+            if len(elem.text_content()) == 0 and len(elem.findall('.//img')) == 0:
+                elem.drop_tree()
+
         allowed = {}
         # Conditionally clean <table>s, <ul>s, and <div>s
         for el in self.reverse_tags(node, "table", "ul", "div"):
