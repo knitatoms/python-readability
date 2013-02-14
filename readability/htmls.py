@@ -5,6 +5,7 @@ import logging
 import lxml.html
 import re
 import codecs
+from lxml.html import html5parser
 
 logging.getLogger().setLevel(logging.DEBUG)
 
@@ -21,7 +22,15 @@ def build_doc(page):
         if enc != None :
             page_unicode = page.decode(enc, 'replace')
         else: # what to do? Should we fall back to chardet ?
-            page_unicode = page    doc = lxml.html.document_fromstring(page_unicode.encode('utf-8', 'replace'), parser=utf8_parser)
+            page_unicode = page
+    try:
+        doc = lxml.html.document_fromstring(page_unicode.encode('utf-8', 'replace'), parser=utf8_parser)
+    except:
+		# lxml.html parser didn't want to handle this markup, for example because of "unknown" entities like &raquo;
+    	# unfortunately html5parser will return elements of type  'lxml.etree._Element'
+    	# 'lxml.html.HtmlElement' has methods we would like to use. Hence the double serialization/parsing
+        tmpdoc = html5parser.document_fromstring(page,guess_charset=True) # guess_charset just in case above get_encoding() call failed..
+        doc = lxml.html.document_fromstring(page_unicode.encode('utf-8', 'replace'), parser=utf8_parser)
     return doc
 
 def js_re(src, pattern, flags, repl):
