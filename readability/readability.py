@@ -270,7 +270,7 @@ class Document:
 
             # If this paragraph is less than MIN_LEN characters
             # don't even count it.
-            if inner_text_len < MIN_LEN:
+            if inner_text_len < MIN_LEN and not elem.tag.lower() in ["h1", "h2", "h3", "h4", "h5", "h6", "th"]:
                 continue
 
             if parent_node not in candidates:
@@ -356,7 +356,16 @@ class Document:
             if REGEXES['unlikelyCandidatesRe'].search(s) and (not REGEXES['okMaybeItsACandidateRe'].search(s)) and elem.tag not in ['html', 'body']:
                 self.debug("Removing unlikely candidate - %s" % describe(elem))
                 elem.drop_tree()
-
+    
+    def class_or_id_matches(self, elem, regexpref):
+        "Checks whether the class or id attribute of an element matches a regexp (regexp defined by referencing the REGEXES dict)"
+        s = "%s %s" % (elem.get('class', ''), elem.get('id', ''))
+        if len(s) < 2:
+            return False
+        # self.debug( " .. looking for "+s )
+        return REGEXES[regexpref].search(s) 
+       
+    
     def transform_misused_divs_into_paragraphs(self):
         for elem in self.tags(self.html, 'div'):
             # transform <div>s that do not contain other block elements into
