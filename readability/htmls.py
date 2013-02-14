@@ -4,6 +4,7 @@ from lxml.html import tostring
 import logging
 import lxml.html
 import re
+import codecs
 
 logging.getLogger().setLevel(logging.DEBUG)
 
@@ -14,8 +15,13 @@ def build_doc(page):
         page_unicode = page
     else:
         enc = get_encoding(page)
-        page_unicode = page.decode(enc, 'replace')
-    doc = lxml.html.document_fromstring(page_unicode.encode('utf-8', 'replace'), parser=utf8_parser)
+        # remove any BOM from UTF-8 data
+        if page[:3] == codecs.BOM_UTF8:
+            page = page[3:]
+        if enc != None :
+            page_unicode = page.decode(enc, 'replace')
+        else: # what to do? Should we fall back to chardet ?
+            page_unicode = page    doc = lxml.html.document_fromstring(page_unicode.encode('utf-8', 'replace'), parser=utf8_parser)
     return doc
 
 def js_re(src, pattern, flags, repl):
