@@ -26,7 +26,7 @@ def normalize_spaces(s):
     return ' '.join(s.split())
 
 html_cleaner = Cleaner(scripts=True, javascript=True, comments=True,
-                  style=True, links=True, meta=False, add_nofollow=False,
+                  style=True, links=True, meta=True, add_nofollow=False,
                   page_structure=False, processing_instructions=True, embedded=False,
                   frames=False, forms=False, annoying_tags=False, remove_tags=None,
                   remove_unknown_tags=False, safe_attrs_only=False)
