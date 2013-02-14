@@ -79,7 +79,7 @@ def text_length(i):
 
 class Document:
     """Class to build a etree document out of html."""
-    TEXT_LENGTH_THRESHOLD = 25
+    TEXT_LENGTH_THRESHOLD = 28
     RETRY_LENGTH = 250
 
     def __init__(self, input, **options):
@@ -268,7 +268,7 @@ class Document:
             inner_text = clean(elem.text_content() or "")
             inner_text_len = len(inner_text)
 
-            # If this paragraph is less than 25 characters
+            # If this paragraph is less than MIN_LEN characters
             # don't even count it.
             if inner_text_len < MIN_LEN:
                 continue
