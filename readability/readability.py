@@ -176,6 +176,7 @@ class Document:
                 of_acceptable_length = article_length >= retry_length
                 if ruthless and not of_acceptable_length:
                     ruthless = False
+                    log.debug('Not enough content after ruthless removal - trying again')
                     # Loop through and try again.
                     continue
                 else:
