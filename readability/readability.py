@@ -23,9 +23,9 @@ log = logging.getLogger()
 
 
 REGEXES = {
-    'unlikelyCandidatesRe': re.compile('combx|comment|community|disqus|extra|foot|header|menu|remark|rss|shoutbox|sidebar|sponsor|ad-break|agegate|pagination|pager|popup|tweet|twitter|warn-login-post-vote-facebook', re.I),
+    'unlikelyCandidatesRe': re.compile('combx|comment|community|disqus|extra|foot|header|menu|remark|rss|shoutbox|sidebar|sponsor|ad-break|agegate|pagination|pager|popup|tweet|twitter|warn-login-post-vote-facebook|commentlist|send2friend', re.I),
     'okMaybeItsACandidateRe': re.compile('and|article|body|column|(?<!footer)main|shadow', re.I),
-    'positiveRe': re.compile('article|body|content|entry|hentry|main|page|pagination|post|text|blog|story|main_article|contenuto', re.I),
+    'positiveRe': re.compile('article|body|content|entry|hentry|main|page|pagination|post|text|blog|story|main_article|contenuto|preambula', re.I),
     'negativeRe': re.compile('combx|comment|com-|contact|foot|footer|footnote|masthead|media|meta|outbrain|promo|related|scroll|shoutbox|sidebar|sponsor|shopping|tags|tool|widget|no-script-message|errorBox|form(?!at)|entry-utility', re.I),
     'divToPElementsRe': re.compile('<(a|blockquote|dl|div|img|ol|p|pre|table|ul)', re.I),
     #'replaceBrsRe': re.compile('(<br[^>]*>[ \n\r\t]*){2,}',re.I),
