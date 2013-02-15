@@ -433,7 +433,12 @@ class Document:
             # Remove A tags if empty (we avoid problems when empty A is serialized <a href=""/>
             if len(elem.text_content()) == 0 and len(elem.findall('.//img')) == 0:
                 elem.drop_tree()
-
+        for elem in self.tags(node, "a"):
+            href=elem.attrib.get('href')
+            # if A points to http://get.adobe.com/flashplayer/ or similar, remove grandparent (assumes markup like <div id="player"><p><a href="...">get flashplayer) 
+            if  href and 'get' in href and 'flashplayer' in href and ( 'adobe' in href or 'macromedia' in href ):
+                elem.getparent().getparent().drop_tree()
+        
         allowed = {}
         # Conditionally clean <table>s, <ul>s, and <div>s
         for el in self.reverse_tags(node, "table", "ul", "div"):
