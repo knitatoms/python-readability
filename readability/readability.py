@@ -168,7 +168,7 @@ class Document:
                         article = self.html.find('body')
                         if article is None:
                             article = self.html
-                cleaned_article = self.sanitize(article, candidates)
+                cleaned_article = self.sanitize(article, candidates, ruthless)
                 article_length = len(cleaned_article or '')
                 retry_length = self.options.get(
                     'retry_length',
@@ -421,7 +421,7 @@ class Document:
             for e in reversed(node.findall('.//%s' % tag_name)):
                 yield e
 
-    def sanitize(self, node, candidates):
+    def sanitize(self, node, candidates, ruthless):
         node=copy.deepcopy(node)
         MIN_LEN = self.options.get('min_text_length',
             self.TEXT_LENGTH_THRESHOLD)
@@ -495,7 +495,7 @@ class Document:
                     to_remove = True
                 elif counts["li"] > counts["p"] and tag != "ul" and tag != "ol":
                     reason = "more <li>s than <p>s"
-                    to_remove = True
+                    to_remove = ruthless
                 elif counts["input"] > (counts["p"] / 3):
                     reason = "less than 3x <p>s than <input>s"
                     to_remove = True
