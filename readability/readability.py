@@ -438,6 +438,10 @@ class Document:
             # if A points to http://get.adobe.com/flashplayer/ or similar, remove grandparent (assumes markup like <div id="player"><p><a href="...">get flashplayer) 
             if  href and 'get' in href and 'flashplayer' in href and ( 'adobe' in href or 'macromedia' in href ):
                 elem.getparent().getparent().drop_tree()
+            # drop A elements marked rel=tag (and the parent element - assumes markup like <div><a rel="tag">foo</a>, <a rel=tag>...)
+            rel=elem.attrib.get('rel')
+            if rel=='tag'and elem.getparent() and elem.getparent().getparent():
+                elem.getparent().drop_tree() 
         
         allowed = {}
         # Conditionally clean <table>s, <ul>s, and <div>s
