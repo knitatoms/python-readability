@@ -179,6 +179,13 @@ class Document:
                     log.debug('Not enough content after ruthless removal - trying again')
                     # Loop through and try again.
                     continue
+                elif not of_acceptable_length:
+                    # even non-ruthless parsing removed too much. Fall back to naively extracting paragraphs
+                    log.debug( 'still not acceptable length after non-ruthless processing: '+str(article_length) )
+                    paragraphs=self.get_paragraphs_with_content(article)
+                    log.debug('This is what we are looking at '+paragraphs.text_content())
+                    self.html = paragraphs
+                    return self.get_clean_html()
                 else:
                     return cleaned_article
         except StandardError, e:
@@ -575,6 +582,24 @@ class Document:
         self.html = node
         return self.get_clean_html()
 
+    def get_paragraphs_with_content(self, article):
+        protected_elms=[]
+        MIN_LEN = self.options.get('min_text_length',
+            self.TEXT_LENGTH_THRESHOLD)
+        for para in self.tags(article, 'p'):
+            if para.text_content() and len(para.text_content()) > MIN_LEN:
+                protected_elms.append(para)
+                for child in self.tags(para, '*'):
+                    protected_elms.append(child)
+                parent=para.getparent()
+                while parent is not None:
+                    protected_elms.append(parent)
+                    parent=parent.getparent()
+        for elem in self.tags(article, '*'):
+            if not elem in protected_elms:
+                log.debug( 'dropping '+describe(elem) )
+                elem.drop_tree()
+        return article
 
 class HashableElement():
     def __init__(self, node):
