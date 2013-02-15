@@ -429,8 +429,10 @@ class Document:
 
         for elem in self.tags(node, "form", "iframe", "textarea"):
             elem.drop_tree()
-        for elem in self.tags(node, "a"):
-            # Remove A tags if empty (we avoid problems when empty A is serialized <a href=""/>
+        for elem in self.tags(node, '*'):
+            # Remove tags if empty, except BR and IMG (we avoid problems when empty A is serialized <a href=""/>
+            if elem.tag.lower() in ['br', 'img', 'hr'] :
+                continue
             if len(elem.text_content()) == 0 and len(elem.findall('.//img')) == 0:
                 elem.drop_tree()
         for elem in self.tags(node, "a"):
