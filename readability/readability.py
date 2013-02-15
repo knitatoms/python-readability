@@ -2,6 +2,7 @@
 import logging
 import re
 import sys
+import copy
 
 from collections import defaultdict
 from lxml.etree import tostring
@@ -421,6 +422,7 @@ class Document:
                 yield e
 
     def sanitize(self, node, candidates):
+        node=copy.deepcopy(node)
         MIN_LEN = self.options.get('min_text_length',
             self.TEXT_LENGTH_THRESHOLD)
         for header in self.tags(node, "h1", "h2", "h3", "h4", "h5", "h6"):
