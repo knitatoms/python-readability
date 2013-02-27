@@ -349,6 +349,9 @@ class Document:
             if REGEXES['positiveRe'].search(e.get('id')):
                 weight += 25
 
+        # Handle itemprop elelements <div itemprop="mainContentOfPage" itemtype="http://schema.org/Article" itemscope="">
+        if e.get('itemprop', None) == 'mainContentOfPage':
+            weight += 100
         return weight
 
     def score_node(self, elem):
@@ -382,7 +385,7 @@ class Document:
         s = "%s %s" % (elem.get('class', ''), elem.get('id', ''))
         if len(s) < 2:
             return False
-        # self.debug( " .. looking for "+s )
+        # self.debug( " .. looking at class/id "+s )
         return REGEXES[regexpref].search(s) 
        
     
