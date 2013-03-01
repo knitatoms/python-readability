@@ -350,7 +350,7 @@ class Document:
                 weight += 25
 
         # Handle itemprop elelements <div itemprop="mainContentOfPage" itemtype="http://schema.org/Article" itemscope="">
-        if e.get('itemprop', None) == 'mainContentOfPage':
+        if e.get('itemprop', None) == 'mainContentOfPage' or e.get('itemprop', None) == 'articleBody':
             weight += 100
         return weight
 
