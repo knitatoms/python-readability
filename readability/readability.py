@@ -480,7 +480,7 @@ class Document:
                 content_score = 0
             tag = el.tag
 
-            if weight + content_score < 0:
+            if ruthless and weight + content_score < 0:
                 self.debug("Cleaned %s with score %6.3f and weight %-3s" %
                     (describe(el), content_score, weight, ))
                 el.drop_tree()
