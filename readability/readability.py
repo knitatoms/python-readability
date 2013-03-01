@@ -454,7 +454,7 @@ class Document:
                 elem.getparent().getparent().drop_tree()
             # drop A elements marked rel=tag (and the parent element - assumes markup like <div><a rel="tag">foo</a>, <a rel=tag>...)
             rel=elem.attrib.get('rel')
-            if rel=='tag'and elem.getparent() and elem.getparent().getparent():
+            if rel=='tag'and elem.getparent()  is not None and elem.getparent().getparent()  is not None:
                 elem.getparent().drop_tree() 
         
         allowed = {}
