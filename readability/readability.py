@@ -367,7 +367,8 @@ class Document:
             content_score -= 5
         return {
             'content_score': content_score,
-            'elem': elem
+            'elem': elem,
+            'desc': describe(elem)
         }
 
     def debug(self, *a):
@@ -376,7 +377,10 @@ class Document:
 
     def remove_unlikely_candidates(self):
         for elem in self.html.iter():
-            if self.class_or_id_matches(elem,'unlikelyCandidatesRe') and (not self.class_or_id_matches(elem,'okMaybeItsACandidateRe')) and elem.tag not in ['html', 'body']:
+            if elem.tag not in ['html', 'body'] and self.class_or_id_matches(elem,'unlikelyCandidatesRe'):
+                if  self.class_or_id_matches(elem,'okMaybeItsACandidateRe') :
+                     self.debug("Skipped removing unlikely candidate, matched maybe expression - %s" % describe(elem))
+                else :
                 self.debug("Removing unlikely candidate - %s" % describe(elem))
                 elem.drop_tree()
     
@@ -403,6 +407,12 @@ class Document:
                 elem.tag = "p"
                 #print "Fixed element "+describe(elem)
 
+        # find SPAN that contains BR but is not inside P, convert them to P too
+        for elem in self.tags(self.html, 'span'):
+            if len(elem.findall('.//br')) > 0:
+                if len(elem.xpath('ancestor::p')) is 0:
+                    self.debug("Altering the SPAN %s to p" % (describe(elem)))
+                    elem.tag='p'
         for elem in self.tags(self.html, 'div'):
             if elem.text and elem.text.strip():
                 p = fragment_fromstring('<p/>')
