@@ -23,10 +23,10 @@ log = logging.getLogger()
 
 
 REGEXES = {
-    'unlikelyCandidatesRe': re.compile('combx|comment|community|disqus|extra|foot|header|menu|remark|rss|shoutbox|sidebar|sponsor|ad-break|agegate|pagination|pager|popup|tweet|twitter|warn-login-post-vote-facebook|commentlist|send2friend|fofaside|getsocial|social-sharing|hidden', re.I),
+    'unlikelyCandidatesRe': re.compile('combx|comment|community|disqus|extra|foot|header|menu|remark|rss|shoutbox|sidebar|sponsor|ad-break|agegate|pagination|pager|popup|tweet|twitter|warn-login-post-vote-facebook|commentlist|send2friend|fofaside|getsocial|social-sharing|hidden|social_bar', re.I),
     'okMaybeItsACandidateRe': re.compile('and|article|body|column|(?<!footer)main|shadow', re.I),
     'positiveRe': re.compile('article|body|content|entry|hentry|main|page|pagination|post|text|blog|story|main_article|contenuto|preambula|slide-content|field-name-body', re.I),
-    'negativeRe': re.compile('combx|comment|com-|contact|foot|footer|footnote|masthead|media|meta|outbrain|promo|related|scroll|shoutbox|sidebar|sponsor|shopping|tags|tool|widget|no-script-message|errorBox|form(?!at)|entry-utility|flag-article-lightbox|article-newsletter-engage-content|aside|subcontent', re.I),
+    'negativeRe': re.compile('combx|comment|com-|contact|foot|footer|footnote|masthead|media|meta|outbrain|promo|related|scroll|shoutbox|sidebar|sponsor|shopping|tags|widget|no-script-message|errorBox|form(?!at)|entry-utility|flag-article-lightbox|article-newsletter-engage-content|aside|subcontent|ja-tab|tooltip|article_toolbox|toolbar', re.I),
     'divToPElementsRe': re.compile('<(a|blockquote|dl|div|img|ol|p|pre|table|ul)', re.I),
     #'replaceBrsRe': re.compile('(<br[^>]*>[ \n\r\t]*){2,}',re.I),
     #'replaceFontsRe': re.compile('<(\/?)font[^>]*>',re.I),
