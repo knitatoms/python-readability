@@ -381,8 +381,9 @@ class Document:
                 if  self.class_or_id_matches(elem,'okMaybeItsACandidateRe') :
                      self.debug("Skipped removing unlikely candidate, matched maybe expression - %s" % describe(elem))
                 else :
-                self.debug("Removing unlikely candidate - %s" % describe(elem))
-                elem.drop_tree()
+                    self.debug("Removing unlikely candidate - %s" % describe(elem))
+                    elem.drop_tree()
+                    
     
     def class_or_id_matches(self, elem, regexpref):
         "Checks whether the class or id attribute of an element matches a regexp (regexp defined by referencing the REGEXES dict)"
