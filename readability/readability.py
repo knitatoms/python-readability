@@ -205,11 +205,15 @@ class Document:
         else:
             output = document_fromstring('<div/>')
         best_elem = best_candidate['elem']
-        for sibling in best_elem.getparent().getchildren():
+        # look in grandparent if it exists, otherwise parent..
+        nearbyElementAncestor = best_elem.getparent()
+        if nearbyElementAncestor.getparent() is not None :
+            nearbyElementAncestor = nearbyElementAncestor.getparent()
+        for sibling in nearbyElementAncestor.getchildren():
             # in lxml there no concept of simple text
             # if isinstance(sibling, NavigableString): continue
             append = False
-            if sibling is best_elem:
+            if sibling is best_elem or best_elem in sibling:
                 append = True
             sibling_key = sibling  # HashableElement(sibling)
             if sibling_key in candidates and \
