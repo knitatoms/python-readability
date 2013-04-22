@@ -205,15 +205,25 @@ class Document:
         else:
             output = document_fromstring('<div/>')
         best_elem = best_candidate['elem']
-        # look in grandparent if it exists, otherwise parent..
-        nearbyElementAncestor = best_elem.getparent()
-        if nearbyElementAncestor.getparent() is not None :
-            nearbyElementAncestor = nearbyElementAncestor.getparent()
-        for sibling in nearbyElementAncestor.getchildren():
+        # Some sites have an "ingress" element outside of the main article, inside grandparent. Make sure it gets included too, otherwise the summary will be incomplete
+        try:
+            for sibling in best_elem.getparent().getparent().getchildren():
+                if 'ingress' in sibling.attrib.get('class'):
+                    if html_partial:
+                        output.append(sibling)
+                    else:
+                        output.getchildren()[0].getchildren()[0].append(sibling)
+                    break
+                if best_elem in sibling:
+                    break
+        except:
+            log.exception('error iterating grandparent\'s children')
+
+        for sibling in best_elem.getparent().getchildren():
             # in lxml there no concept of simple text
             # if isinstance(sibling, NavigableString): continue
             append = False
-            if sibling is best_elem or best_elem in sibling:
+            if sibling is best_elem:
                 append = True
             sibling_key = sibling  # HashableElement(sibling)
             if sibling_key in candidates and \
