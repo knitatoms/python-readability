@@ -28,11 +28,11 @@ REGEXES = {
     'positiveRe': re.compile('article|body|content|entry|hentry|main|page|pagination|post|text|blog|story|main_article|contenuto|preambula|slide-content|field-name-body|newsbody', re.I),
     'negativeRe': re.compile('combx|comment|com-|contact|foot|footer|footnote|masthead|media|meta|outbrain|promo|related|scroll|shoutbox|sidebar|sponsor|shopping|tags|widget|no-script-message|errorBox|form(?!at)|entry-utility|flag-article-lightbox|article-newsletter-engage-content|aside|subcontent|ja-tab|tooltip|article_toolbox|toolbar|bylinePictureBox|buttonheading|articleBottom|article-tags|img', re.I),
     'divToPElementsRe': re.compile('<(a|blockquote|dl|div|img|ol|p|pre|table|ul)', re.I),
-    #'replaceBrsRe': re.compile('(<br[^>]*>[ \n\r\t]*){2,}',re.I),
+    # 'replaceBrsRe': re.compile('(<br[^>]*>[ \n\r\t]*){2,}',re.I),
     #'replaceFontsRe': re.compile('<(\/?)font[^>]*>',re.I),
     #'trimRe': re.compile('^\s+|\s+$/'),
     #'normalizeRe': re.compile('\s{2,}/'),
-    #'killBreaksRe': re.compile('(<br\s*\/?>(\s|&nbsp;?)*){1,}/'),
+    # 'killBreaksRe': re.compile('(<br\s*\/?>(\s|&nbsp;?)*){1,}/'),
     #'videoRe': re.compile('http:\/\/(www\.)?(youtube|vimeo)\.com', re.I),
     #skipFootnoteLink:      /^\s*(\[?[a-z0-9]{1,2}\]?|^|edit|citation needed)\s*$/i,
 }
@@ -125,7 +125,10 @@ class Document:
         return shorten_title(self._html(True))
 
     def get_clean_html(self):
-         return clean_attributes(tounicode(self.html))
+        return clean_attributes(tounicode(self.html))
+
+    def get_clean_text(self):
+        return self.html.text_content()
 
     def summary(self, html_partial=False):
         """Generate the summary of the html docuemnt
@@ -608,7 +611,8 @@ class Document:
                 pass
 
         self.html = node
-        return self.get_clean_html()
+        # return self.get_clean_html()
+        return self.get_clean_text()
 
     def get_paragraphs_with_content(self, article):
         protected_elms=[]
