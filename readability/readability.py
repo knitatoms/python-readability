@@ -128,7 +128,7 @@ class Document:
         return clean_attributes(tounicode(self.html))
 
     def get_clean_text(self):
-        return self.html.text_content()
+        return unicode(self.html.text_content())
 
     def summary(self, html_partial=False):
         """Generate the summary of the html docuemnt
