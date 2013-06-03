@@ -208,7 +208,7 @@ class Document:
         # Some sites have an "ingress" element outside of the main article, inside grandparent. Make sure it gets included too, otherwise the summary will be incomplete
         try:
             for sibling in best_elem.getparent().getparent().getchildren():
-                if 'ingress' in sibling.attrib.get('class'):
+                if sibling.attrib.get('class') and 'ingress' in sibling.attrib.get('class'):
                     if html_partial:
                         output.append(sibling)
                     else:
