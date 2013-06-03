@@ -168,6 +168,7 @@ class Document:
                         article = self.html.find('body')
                         if article is None:
                             article = self.html
+                article = self.remove_root_tags(article)
                 cleaned_article = self.sanitize(article, candidates, ruthless)
                 article_length = len(cleaned_article or '')
                 retry_length = self.options.get(
@@ -391,7 +392,7 @@ class Document:
 
     def remove_unlikely_candidates(self):
         for elem in self.html.iter():
-            if elem.tag not in ['html', 'body'] and self.class_or_id_matches(elem,'unlikelyCandidatesRe'):
+            if self.class_or_id_matches(elem,'unlikelyCandidatesRe'):
                 if  self.class_or_id_matches(elem,'okMaybeItsACandidateRe') :
                      self.debug("Skipped removing unlikely candidate, matched maybe expression - %s" % describe(elem))
                 else :
@@ -627,6 +628,14 @@ class Document:
                 log.debug( 'dropping '+describe(elem) )
                 elem.drop_tree()
         return article
+
+    def remove_root_tags(self, article):
+        while True:
+            if article.tag in ['html', 'body']:
+                article = article.getchildren()[0]
+            else:
+                return article
+
 
 class HashableElement():
     def __init__(self, node):
