@@ -25,7 +25,7 @@ log = logging.getLogger()
 REGEXES = {
     'unlikelyCandidatesRe': re.compile('combx|comment|community|disqus|extra|foot|header|menu|remark|rss|shoutbox|sidebar|sponsor|ad-break|agegate|pagination|pager|popup|tweet|twitter|warn-login-post-vote-facebook|commentlist|send2friend|fofaside|getsocial|social-sharing|hidden|social_bar|ad-container', re.I),
     'okMaybeItsACandidateRe': re.compile('and|article|body|column|(?<!footer)main|shadow', re.I),
-    'positiveRe': re.compile('article|body|content|entry|hentry|main|page|pagination|post|text|blog|story|main_article|contenuto|preambula|slide-content|field-name-body|newsbody', re.I),
+    'positiveRe': re.compile('article|body|content|entry|hentry|main|page|pagination|post|text|blog|story|main_article|contenuto|preambula|slide-content|field-name-body|newsbody|_ga1_on_', re.I),
     'negativeRe': re.compile('combx|comment|com-|contact|foot|footer|footnote|masthead|media|meta|outbrain|promo|related|scroll|shoutbox|sidebar|sponsor|shopping|tags|widget|no-script-message|errorBox|form(?!at)|entry-utility|flag-article-lightbox|article-newsletter-engage-content|aside|subcontent|ja-tab|tooltip|article_toolbox|toolbar|bylinePictureBox|buttonheading|articleBottom|article-tags|img', re.I),
     'divToPElementsRe': re.compile('<(a|blockquote|dl|div|img|ol|p|pre|table|ul)', re.I),
     # 'replaceBrsRe': re.compile('(<br[^>]*>[ \n\r\t]*){2,}',re.I),
@@ -128,7 +128,12 @@ class Document:
         return clean_attributes(tounicode(self.html))
 
     def get_clean_text(self):
-        return unicode(self.html.text_content())
+        text = unicode(self.html.text_content())
+        clear_text = re.sub(r"(\n)+", '\n', text)
+        clear_text = re.sub(r"(\t)+", '\t', clear_text)
+        clear_text = re.sub(r"^\s+", '', clear_text, flags=re.MULTILINE)
+        clear_text = re.sub(r"\s+$", '', clear_text, flags=re.MULTILINE)
+        return clear_text.strip()
 
     def summary(self, html_partial=False):
         """Generate the summary of the html docuemnt
