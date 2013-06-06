@@ -12,8 +12,8 @@ utf8_parser = lxml.html.HTMLParser(encoding='utf-8')
 
 
 def remove_elements(doc):
-    bad_classes = 'post-tags'
-    bad_ids = ''
+    bad_classes = 'post-tags|publ-list'
+    # bad_ids = 'tab-3|tab-4'
 
     for bas_class in bad_classes.split('|'):
         for bad in doc.xpath("//div[contains(@class, '%s')]" % bas_class):
