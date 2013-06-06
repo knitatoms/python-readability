@@ -10,6 +10,20 @@ logging.getLogger().setLevel(logging.DEBUG)
 
 utf8_parser = lxml.html.HTMLParser(encoding='utf-8')
 
+
+def remove_elements(doc):
+    bad_classes = 'post-tags'
+    bad_ids = ''
+
+    for bas_class in bad_classes.split('|'):
+        for bad in doc.xpath("//div[contains(@class, '%s')]" % bas_class):
+            bad.getparent().remove(bad)
+
+    # for bas_id in bad_ids.split('|'):
+    #     for bad in doc.xpath("//div[contains(@id, '%s')]" % bas_id):
+    #         bad.getparent().remove(bad)
+
+
 def build_doc(page):
     if isinstance(page, unicode):
         page_unicode = page
@@ -23,6 +37,7 @@ def build_doc(page):
         else: # what to do? Should we fall back to chardet ?
             page_unicode = page
     doc = lxml.html.document_fromstring(page_unicode.encode('utf-8', 'replace'), parser=utf8_parser)
+    remove_elements(doc)
     return doc
 
 def js_re(src, pattern, flags, repl):
