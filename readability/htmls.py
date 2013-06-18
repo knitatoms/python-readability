@@ -12,16 +12,16 @@ utf8_parser = lxml.html.HTMLParser(encoding='utf-8')
 
 
 def remove_elements(doc):
-    bad_classes = 'post-tags|publ-list'
-    # bad_ids = 'tab-3|tab-4'
+    bad_classes = 'left_menu|post-tags|publ-list|right'
+    bad_ids = 'speedMenu|othernewsTabs|content1|zone-footer-wrapper'
 
-    for bas_class in bad_classes.split('|'):
-        for bad in doc.xpath("//div[contains(@class, '%s')]" % bas_class):
+    for bad_class in bad_classes.split('|'):
+        for bad in doc.xpath("//div[contains(@class, '%s')]" % bad_class):
             bad.getparent().remove(bad)
 
-    # for bas_id in bad_ids.split('|'):
-    #     for bad in doc.xpath("//div[contains(@id, '%s')]" % bas_id):
-    #         bad.getparent().remove(bad)
+    for bad_id in bad_ids.split('|'):
+        for bad in doc.xpath("//div[contains(@id, '%s')]" % bad_id):
+            bad.getparent().remove(bad)
 
 
 def build_doc(page):

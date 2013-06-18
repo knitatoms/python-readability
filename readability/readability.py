@@ -25,7 +25,7 @@ log = logging.getLogger()
 REGEXES = {
     'unlikelyCandidatesRe': re.compile('texts|news-tab|z-other|othernews|othervip|combx|comment|community|disqus|extra|foot|header|menu|remark|rss|shoutbox|sidebar|sponsor|ad-break|agegate|pagination|pager|popup|tweet|twitter|warn-login-post-vote-facebook|commentlist|send2friend|fofaside|getsocial|social-sharing|hidden|social_bar|ad-container', re.I),
     'okMaybeItsACandidateRe': re.compile('and|article|body|column|(?<!footer)main|shadow', re.I),
-    'positiveRe': re.compile('box details|news_text|body|content|entry|hentry|main|page|pagination|post|text|blog|story|main_article|contenuto|preambula|slide-content|field-name-body|newsbody|_ga1_on_|zametka|blog_content', re.I),
+    'positiveRe': re.compile('topic|s12 c_dgr|box details|news_text|body|content|entry|hentry|main|page|pagination|post|text|blog|story|main_article|contenuto|preambula|slide-content|field-name-body|newsbody|_ga1_on_|zametka|blog_content', re.I),
     'negativeRe': re.compile('list_6_post|texts|title-wrap|tab-holder|news-tab|continfonewsart|error-text|relcontent|shadow_block|inited|aside|right_colomn_block|combx|comment|com-|contact|foot|footer|footnote|masthead|media|meta|outbrain|promo|related|scroll|shoutbox|sidebar|sponsor|shopping|tags|widget|no-script-message|errorBox|form(?!at)|entry-utility|flag-article-lightbox|article-newsletter-engage-content|aside|subcontent|ja-tab|tooltip|article_toolbox|toolbar|bylinePictureBox|buttonheading|articleBottom|article-tags|img', re.I),
     'divToPElementsRe': re.compile('<(a|blockquote|dl|div|img|ol|p|pre|table|ul)', re.I),
     # 'replaceBrsRe': re.compile('(<br[^>]*>[ \n\r\t]*){2,}',re.I),
